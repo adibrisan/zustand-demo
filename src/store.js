@@ -1,10 +1,15 @@
 import { create } from "zustand";
+import { devtools, persist } from "zustand/middleware";
 
 const store = (set) => ({
-  tasks: [{ title: "TestTask", state: "ONGOING" }],
+  tasks: [],
   draggedTask: null,
   addTask: (title, state) =>
-    set((prevData) => ({ tasks: [...prevData.tasks, { title, state }] })),
+    set(
+      (prevData) => ({ tasks: [...prevData.tasks, { title, state }] }),
+      false,
+      "addTask"
+    ),
   deleteTask: (title) =>
     set((prevData) => ({
       tasks: prevData.tasks.filter((task) => task.title !== title),
@@ -18,4 +23,4 @@ const store = (set) => ({
     })),
 });
 
-export const useStore = create(store);
+export const useStore = create(persist(devtools(store), { name: "store" }));
