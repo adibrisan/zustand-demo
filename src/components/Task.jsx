@@ -8,10 +8,15 @@ const Task = ({ title }) => {
     store.tasks.find((task) => task.title === title)
   );
   const deleteTask = useStore((store) => store.deleteTask);
+  const setDraggedTask = useStore((store) => store.setDraggedTask);
 
   const combinedClass = `${styles.status} ${styles[task.state]}`;
   return (
-    <div className={styles.task}>
+    <div
+      className={styles.task}
+      draggable
+      onDragStart={() => setDraggedTask(task.title)}
+    >
       <div>{task.title}</div>
       <div className={styles.bottomWrapper}>
         <div>
